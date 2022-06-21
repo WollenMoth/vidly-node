@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
 const { Rental, validate } = require("../models/rental");
@@ -34,12 +35,22 @@ router.post("/", async (req, res) => {
       dailyRentalRate: movie.dailyRentalRate,
     },
   });
-  const result = await rental.save();
-
   movie.numberInStock--;
-  await movie.save();
 
-  res.send(result);
+  try {
+    const session = await mongoose.startSession();
+
+    await session.withTransaction(async () => {
+      await rental.save();
+      await movie.save();
+    });
+
+    await session.endSession();
+
+    res.send(rental);
+  } catch (ex) {
+    res.status(500).send("Something failed.");
+  }
 });
 
 router.get("/:id", async (req, res) => {
