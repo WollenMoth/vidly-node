@@ -13,9 +13,9 @@ router.post("/", async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   const genre = new Genre(req.body);
-  const result = await genre.save();
+  await genre.save();
 
-  res.send(result);
+  res.send(genre);
 });
 
 router.get("/:id", async (req, res) => {

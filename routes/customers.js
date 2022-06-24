@@ -13,9 +13,9 @@ router.post("/", async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   const customer = new Customer(req.body);
-  const result = await customer.save();
+  await customer.save();
 
-  res.send(result);
+  res.send(customer);
 });
 
 router.get("/:id", async (req, res) => {

@@ -18,9 +18,9 @@ router.post("/", async (req, res) => {
 
   const { _id, name } = genre;
   const movie = new Movie({ ...req.body, genre: { _id, name } });
-  const result = await movie.save();
+  await movie.save();
 
-  res.send(result);
+  res.send(movie);
 });
 
 router.get("/:id", async (req, res) => {
