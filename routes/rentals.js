@@ -1,3 +1,4 @@
+const auth = require("../middleware/auth");
 const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
@@ -10,7 +11,7 @@ router.get("/", async (req, res) => {
   res.send(rentals);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -62,7 +63,7 @@ router.get("/:id", async (req, res) => {
   res.send(rental);
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   const rental = await Rental.findByIdAndRemove(req.params.id);
 
   if (!rental)
