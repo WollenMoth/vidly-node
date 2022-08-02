@@ -14,10 +14,9 @@ const users = require("./routes/users");
 const auth = require("./routes/auth");
 const error = require("./middleware/error");
 
-process.on("uncaughtException", (error) => {
-  console.log("WE GOT AN UNCAUGHT EXCEPTION");
-  winston.error(error.message, error);
-});
+winston.handleExceptions(
+  new winston.transports.File({ filename: "uncaughtExceptions.log" })
+);
 
 winston.add(winston.transports.File, { filename: "logfile.log" });
 winston.add(winston.transports.MongoDB, {
