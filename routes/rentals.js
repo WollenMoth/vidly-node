@@ -1,3 +1,4 @@
+const validateObjectId = require("../middleware/validateObjectId");
 const auth = require("../middleware/auth");
 const mongoose = require("mongoose");
 const express = require("express");
@@ -54,7 +55,7 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", validateObjectId, async (req, res) => {
   const rental = await Rental.findById(req.params.id);
 
   if (!rental)
@@ -63,7 +64,7 @@ router.get("/:id", async (req, res) => {
   res.send(rental);
 });
 
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:id", validateObjectId, auth, async (req, res) => {
   const rental = await Rental.findByIdAndRemove(req.params.id);
 
   if (!rental)
