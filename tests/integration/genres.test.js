@@ -9,6 +9,10 @@ describe("/api/genres", () => {
     await Genre.deleteMany({});
   });
 
+  afterAll(() => {
+    mongoose.disconnect();
+  });
+
   describe("GET /", () => {
     it("should return all genres", async () => {
       await Genre.collection.insertMany([

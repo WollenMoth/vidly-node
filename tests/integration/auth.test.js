@@ -2,6 +2,7 @@ const { User } = require("../../models/user");
 const { Genre } = require("../../models/genre");
 const request = require("supertest");
 const server = require("../../index");
+const mongoose = require("mongoose");
 
 describe("auth middleware", () => {
   let token;
@@ -19,6 +20,10 @@ describe("auth middleware", () => {
 
   afterEach(async () => {
     await Genre.deleteMany({});
+  });
+
+  afterAll(() => {
+    mongoose.disconnect();
   });
 
   it("should return 401 if no token is provided", async () => {
