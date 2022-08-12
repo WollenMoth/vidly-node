@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
 const express = require("express");
@@ -20,6 +21,9 @@ router.post("/", auth, async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.id))
+    return res.status(400).send("Invalid ID.");
+
   const genre = await Genre.findById(req.params.id);
 
   if (!genre)
