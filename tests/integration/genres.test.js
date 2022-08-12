@@ -9,10 +9,6 @@ describe("/api/genres", () => {
     await Genre.deleteMany({});
   });
 
-  afterAll(async () => {
-    server.close();
-  });
-
   describe("GET /", () => {
     it("should return all genres", async () => {
       await Genre.collection.insertMany([
