@@ -5,11 +5,13 @@ const { Rental } = require("../../models/rental");
 const { User } = require("../../models/user");
 
 describe("/api/returns", () => {
+  let token;
   let customerId;
   let movieId;
   let rental;
 
   beforeEach(async () => {
+    token = new User().generateAuthToken();
     customerId = mongoose.Types.ObjectId();
     movieId = mongoose.Types.ObjectId();
 
@@ -37,17 +39,11 @@ describe("/api/returns", () => {
   });
 
   describe("POST /", () => {
-    let token;
-
     const exec = () =>
       request(server)
         .post("/api/returns")
         .set("x-auth-token", token)
         .send({ customerId, movieId });
-
-    beforeEach(() => {
-      token = new User().generateAuthToken();
-    });
 
     it("should return 401 if client is not logged in", async () => {
       token = "";
