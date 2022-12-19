@@ -6,14 +6,16 @@ const { User } = require("../../models/user");
 
 describe("/api/returns", () => {
   let token;
-  let customerId;
-  let movieId;
+  let payload;
   let rental;
 
   beforeEach(async () => {
     token = new User().generateAuthToken();
-    customerId = mongoose.Types.ObjectId();
-    movieId = mongoose.Types.ObjectId();
+
+    const customerId = mongoose.Types.ObjectId();
+    const movieId = mongoose.Types.ObjectId();
+
+    payload = { customerId, movieId };
 
     rental = new Rental({
       customer: {
@@ -27,6 +29,7 @@ describe("/api/returns", () => {
         dailyRentalRate: 2,
       },
     });
+
     await rental.save();
   });
 
@@ -43,7 +46,7 @@ describe("/api/returns", () => {
       request(server)
         .post("/api/returns")
         .set("x-auth-token", token)
-        .send({ customerId, movieId });
+        .send(payload);
 
     it("should return 401 if client is not logged in", async () => {
       token = "";
@@ -54,7 +57,7 @@ describe("/api/returns", () => {
     });
 
     it("should return 400 if customerId is not provided", async () => {
-      customerId = "";
+      delete payload.customerId;
 
       const res = await exec();
 
@@ -62,7 +65,7 @@ describe("/api/returns", () => {
     });
 
     it("should return 400 if movieId is not provided", async () => {
-      movieId = "";
+      delete payload.movieId;
 
       const res = await exec();
 
