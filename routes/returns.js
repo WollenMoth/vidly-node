@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const { validate } = require("../models/return");
 const { Rental } = require("../models/rental");
+const { Movie } = require("../models/movie");
 
 router.post("/", auth, async (req, res) => {
   const { error } = validate(req.body);
@@ -20,6 +21,11 @@ router.post("/", auth, async (req, res) => {
   rental.dateReturned = new Date();
   rental.rentalFee = rental.calculateRentalFee();
   await rental.save();
+
+  await Movie.updateOne(
+    { _id: rental.movie._id },
+    { $inc: { numberInStock: 1 } }
+  );
 
   res.send();
 });
