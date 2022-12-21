@@ -1,9 +1,10 @@
 const validateObjectId = require("../middleware/validateObjectId");
-const auth = require("../middleware/auth");
 const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
-const { Rental, validate } = require("../models/rental");
+const auth = require("../middleware/auth");
+const validate = require("../middleware/validate");
+const { Rental, validator } = require("../models/rental");
 const { Customer } = require("../models/customer");
 const { Movie } = require("../models/movie");
 
@@ -12,10 +13,7 @@ router.get("/", async (req, res) => {
   res.send(rentals);
 });
 
-router.post("/", auth, async (req, res) => {
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
+router.post("/", [auth, validate(validator)], async (req, res) => {
   const customer = await Customer.findById(req.body.customerId);
   if (!customer) return res.status(400).send("Invalid customer ID.");
 
@@ -64,7 +62,7 @@ router.get("/:id", validateObjectId, async (req, res) => {
   res.send(rental);
 });
 
-router.delete("/:id", validateObjectId, auth, async (req, res) => {
+router.delete("/:id", [validateObjectId, auth], async (req, res) => {
   const rental = await Rental.findByIdAndRemove(req.params.id);
 
   if (!rental)

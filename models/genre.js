@@ -17,6 +17,6 @@ const schema = Joi.object({
   name: Joi.string().min(5).max(50).required(),
 });
 
-const validate = (genre) => schema.validate(genre);
+const validator = (genre) => schema.validate(genre);
 
-module.exports = { Genre, validate };
+module.exports = { Genre, validator };

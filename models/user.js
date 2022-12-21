@@ -42,6 +42,6 @@ const schema = Joi.object({
   password: Joi.string().required().min(5).max(255),
 });
 
-const validate = (user) => schema.validate(user);
+const validator = (user) => schema.validate(user);
 
-module.exports = { User, validate };
+module.exports = { User, validator };

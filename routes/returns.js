@@ -1,14 +1,12 @@
-const auth = require("../middleware/auth");
 const express = require("express");
 const router = express.Router();
-const { validate } = require("../models/return");
+const auth = require("../middleware/auth");
+const validate = require("../middleware/validate");
+const { validator } = require("../models/return");
 const { Rental } = require("../models/rental");
 const { Movie } = require("../models/movie");
 
-router.post("/", auth, async (req, res) => {
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
+router.post("/", [auth, validate(validator)], async (req, res) => {
   const rental = await Rental.findOne({
     "customer._id": req.body.customerId,
     "movie._id": req.body.movieId,

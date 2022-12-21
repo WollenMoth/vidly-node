@@ -25,6 +25,6 @@ const schema = Joi.object({
   dailyRentalRate: Joi.number().min(0).max(255).required(),
 });
 
-const validate = (movie) => schema.validate(movie);
+const validator = (movie) => schema.validate(movie);
 
-module.exports = { Movie, validate };
+module.exports = { Movie, validator };

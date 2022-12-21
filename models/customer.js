@@ -26,6 +26,6 @@ const schema = Joi.object({
   isGold: Joi.boolean(),
 });
 
-const validate = (customer) => schema.validate(customer);
+const validator = (customer) => schema.validate(customer);
 
-module.exports = { Customer, validate };
+module.exports = { Customer, validator };

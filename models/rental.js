@@ -35,6 +35,6 @@ const schema = Joi.object({
   movieId: Joi.objectId().required(),
 });
 
-const validate = (rental) => schema.validate(rental);
+const validator = (rental) => schema.validate(rental);
 
-module.exports = { Rental, validate };
+module.exports = { Rental, validator };
