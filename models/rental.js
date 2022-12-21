@@ -28,6 +28,13 @@ rentalSchema.methods.calculateRentalFee = function () {
   return rentalDays * this.movie.dailyRentalRate;
 };
 
+rentalSchema.statics.lookup = function (customerId, movieId) {
+  return this.findOne({
+    "customer._id": customerId,
+    "movie._id": movieId,
+  });
+};
+
 const Rental = mongoose.model("Rental", rentalSchema);
 
 const schema = Joi.object({

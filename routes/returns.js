@@ -7,10 +7,7 @@ const { Rental } = require("../models/rental");
 const { Movie } = require("../models/movie");
 
 router.post("/", [auth, validate(validator)], async (req, res) => {
-  const rental = await Rental.findOne({
-    "customer._id": req.body.customerId,
-    "movie._id": req.body.movieId,
-  });
+  const rental = await Rental.lookup(req.body.customerId, req.body.movieId);
   if (!rental) return res.status(404).send("Rental not found.");
 
   if (rental.dateReturned)
