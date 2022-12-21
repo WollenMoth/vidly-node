@@ -13,8 +13,7 @@ router.post("/", [auth, validate(validator)], async (req, res) => {
   if (rental.dateReturned)
     return res.status(400).send("Return already processed.");
 
-  rental.dateReturned = new Date();
-  rental.rentalFee = rental.calculateRentalFee();
+  rental.return();
   await rental.save();
 
   await Movie.updateOne(
