@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "jest --watchAll --verbose --coverage --runInBand"
+  },
+  "engines": {
+    "node": "18.12.1",
+    "npm": "9.2.0"
   },
   "keywords": [],
   "author": "",
